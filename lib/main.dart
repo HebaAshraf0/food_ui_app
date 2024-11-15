@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_ui_app/features/home/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: 
+      home: const HomeScreen(),
     );
   }
 }
