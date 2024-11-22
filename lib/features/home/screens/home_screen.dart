@@ -1,34 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:food_ui_app/design_system/colors.dart';
 
-import '../widgets/home_drawer.dart';
+import '../home.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> _key = GlobalKey();
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  bool isOpened = false;
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      key: _key,
       backgroundColor: ColorsModel.background,
       appBar: AppBar(
-        leading: InkWell(
-          onTap: () => _key.currentState!.openDrawer(),
-          child: const Icon(
-            Icons.menu_open,
-            color: ColorsModel.black,
-          ),
-        ),
-        actions: const [
-          Icon(
-            Icons.shopping_cart,
+        leading: Builder(builder: (context) {
+          return IconButton(
+            highlightColor: ColorsModel.lightOrange,
+            hoverColor: ColorsModel.lightOrange,
+            icon: Icon(
+              Icons.menu,
+            ),
             color: ColorsModel.gray,
-          )
+            onPressed: () => _onPressed(context),
+          );
+        }),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.all(5),
+            child: Icon(
+              Icons.shopping_cart,
+              color: ColorsModel.lightGray,
+            ),
+          ),
         ],
       ),
-      drawer: HomeDrawer(),
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Text(
+              'Delicious                              food for you',
+              maxLines: 2,
+              style: TextStyle(
+                  color: ColorsModel.black,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: 50,
+              width: 300,
+              decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: ColorsModel.lightGray.withOpacity(0.3),
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              child: Row(
+                children: const [
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Icon(Icons.search),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'search',
+                    style: TextStyle(
+                      color: ColorsModel.gray,
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
+  }
+
+  _onPressed(BuildContext context) {
+    if (isOpened) {
+      context.findAncestorStateOfType<HomeDrawerState>()?.close();
+      setState(() {
+        isOpened = false;
+      });
+      return;
+    }
+    context.findAncestorStateOfType<HomeDrawerState>()?.open();
+    setState(() {
+      isOpened = true;
+    });
   }
 }
